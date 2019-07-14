@@ -7,7 +7,7 @@ from getChampionNameByID import get_champions_name
 import sys
 
 api_key = ""  # Enter your own API key in here.
-existingServers = ['euw1', "na1", "eun1", "br1", "la1", "la2", "tr1", "jp1", "kr", "ru"]
+existingServers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr','ru','oc1']
 
 if not api_key:
     print("You forgot to change the api key.\nPlease look at the Github instructions. -> https://github.com/YannickDC/league-championFetcher")
@@ -27,7 +27,7 @@ while True:
         print("Invalid input.")
 while True:
     try:
-        server = input("What server? (euw1, na1, eun1, br1, la1, la2, tr1, jp1, kr, ru)  > ")
+        server = input("What server? (euw1, na1, eun1, br1, la1, la2, oc1, tr1, jp1, kr, ru)  > ")
         if server in existingServers:
             break
         else:
