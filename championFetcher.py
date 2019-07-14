@@ -3,101 +3,90 @@
 import requests
 import json
 from collections import Counter
-from getChampionNameByID import get_champions_name
+from champion_names import champion_names
 import sys
 
-api_key = ""  # Enter your own API key in here.
-existingServers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr','ru','oc1']
-
+api_key = "" # Enter your own API key in here.
 if not api_key:
-    print("You forgot to change the api key.\nPlease look at the Github instructions. -> https://github.com/YannickDC/league-championFetcher")
-    sys.exit(0)
+    if len(sys.argv) == 2:
+        api_key = sys.argv[1]
+    else:
+        print("Error: edit {} to set api_key, or provide it on the command-line.".format(sys.argv[0]))
+        quit(1)
 
-# ask for input
+valid_servers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr','ru','oc1']
 
-
-while True:
+account_name = None
+server = None
+while not account_name:
     try:
-        playerName = input("What name would you like to lookup? >  ")
-        if playerName is None or len(playerName) == 0:
-            print("Summoners name cannot be empty!")
-        else:
-            break
+        account_name = input("What name would you like to lookup? >  ")
     except ValueError:
         print("Invalid input.")
-while True:
+while not server in valid_servers:
     try:
-        server = input("What server? (euw1, na1, eun1, br1, la1, la2, oc1, tr1, jp1, kr, ru)  > ")
-        if server in existingServers:
-            break
-        else:
-            print("Server does not exist.")
+        server = input("Enter a valid server: {} > ".format(valid_servers))
     except ValueError:
         print("Invalid input.")
 
-championIDs = []
-# First things first, get sumID to pull data
+print('Trying to find summoner...')
+account_data = requests.get("https://{}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{}?api_key={}".format(server, account_name, api_key))
+if account_data.status_code == 404:
+    print("Summoner \"{}\" does not exist!".format(account_name))
+    quit(1)
+elif account_data.status_code == 403:
+    print("Permission denied when requesting account data for summoner \"{}\"".format(account_name))
+    quit(1)
+elif account_data.status_code != 200:
+    print("Recieved error HTTP {} when requesting data for summoner \"{}\"".format(account_data.status_code, account_name))
+    quit(1)
 
-print('trying to find player...')
-getPlayerAccount = requests.get(
-    "https://" + server + ".api.riotgames.com/lol/summoner/v4/summoners/by-name/" + playerName + "?api_key=" + api_key)
-if getPlayerAccount.status_code == 200:
-    print("player has been found...")
+account_id = json.loads(account_data.text)["accountId"]
+print("Summoner has been found. Fetching match data. This might take a while...")
 
-    playerAccountJSON = json.loads(getPlayerAccount.text)
-    # accountID has been found
-    accountId = playerAccountJSON["accountId"]
-    accountName = playerAccountJSON["name"]
-    # Now we need to get the total games Value
+matchlist_data = requests.get("https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account/{}?beginIndex=9999999&api_key={}".format(server, account_id, api_key)) # little trick to get that.
+if matchlist_data.status_code == 403:
+    print("Permission denied when requesting total number of matches for summoner \"{}\"".format(account_name))
+    quit(1)
+elif matchlist_data.status_code != 200:
+    print("Recieved error HTTP {} when requesting total number of matches for summoner \"{}\"".format(matchlist_data.status_code, account_name))
+    quit(1)
 
-    getTotalGames = requests.get(
-        "https://" + server + ".api.riotgames.com/lol/match/v4/matchlists/by-account/" + accountId + "?beginIndex=9999999&api_key=" + api_key)  # little trick to get that.
-    if getTotalGames.status_code == 200:
-        totalGamesJSON = json.loads(getTotalGames.text)
-        totalGames = totalGamesJSON["totalGames"]
-        print("total games: ", totalGames)
-        bestTimesToLoop = int(
-            totalGames / 100) + 1  # always wanna do more then actually needed to prevent that matches are missing
-        endIndex = int(100)
-        beginindex = int(0)
+total_games = json.loads(matchlist_data.text)["totalGames"]
 
-        a = int(0)
-        print("calculating...")
-        for a in range(bestTimesToLoop):
-            getMe100Games = requests.get(
-                "https://" + server + ".api.riotgames.com/lol/match/v4/matchlists/by-account/" + accountId + "?endIndex=" + format(
-                    endIndex) + "&beginIndex=" + format(beginindex) + "&api_key=" + api_key)
-            if getMe100Games.status_code == 200:
-                lastMatches = json.loads(getMe100Games.text)
-                matches = int(len(lastMatches["matches"]))
-                matchesdata = lastMatches['matches']
+champions = []
+roles = []
+lanes = []
 
-                for matches in matchesdata:
-                    try:
-                        currentChampion = matches['champion']
-                        championName = get_champions_name(currentChampion)
-                        championIDs.append(championName)
-                    except:
-                        pass
+limit = int(total_games / 100 ) + 1 #always wanna do more then actually needed to prevent that matches are missing
+index_end = 100
+index_start = 0
 
-            endIndex += 100
-            beginindex = int(endIndex - 100)
-            a += 1
-        counterOutput = Counter(championIDs)
-        print("[ Results for {} ] ".format(playerName))
-        print("totalGames: {}".format(totalGames))
-        print("Champions in this result: {}".format(len(counterOutput)))
-        print("[  Champion Results  ]")
-        for key, value in counterOutput.most_common():
-            print(key, value)
+for a in range(limit):
+    matches_data = requests.get("https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account/{}?endIndex={}&beginIndex={}&api_key={}".format(server, account_id, index_end, index_start, api_key))
+    if matches_data.status_code == 200:
+        matches = json.loads(matches_data.text)['matches']
+        for match in matches:
+            roles.append(match['role'])
+            lanes.append(match['lane'])
+            champions.append(champion_names[match['champion']])
+    else:
+        print("Recieved error HTTP {} when requesting match info for summoner \"{}\"".format(matches_data.status_code, account_name))
+        print(matches_data)
+        quit(1)
 
 
+    index_start = index_end
+    index_end +=100
 
-    elif getTotalGames.status_code == 403:
-        print("Forbidden! (getTotalGames)")
-elif getPlayerAccount.status_code == 404:
-    print("Player account does not exist!")
-elif getPlayerAccount.status_code == 403:
-    print("Forbidden!(getPlayerAccount)")
-
+counterRoles = Counter(roles)
+counterLanes = Counter(lanes)
+counterOutput = Counter(champions)
+print("[ Results for {} ] ".format(account_name))
+print("Total games on this account: ", total_games)
+print("\n")
+print("[  Champion Results  ]")
+print("")
+for key,value in counterOutput.most_common():
+    print(key, value)
 
