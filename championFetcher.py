@@ -1,6 +1,10 @@
 #! /usr/bin/env python3
 
-import requests
+try:
+    import requests
+except ImportError:
+    print("\"requests\" module is not installed. \nPlease look at the Github instructions. -> https://github.com/YannickDC/league-championFetcher")
+    quit(1)
 import json
 from collections import Counter
 import sys
