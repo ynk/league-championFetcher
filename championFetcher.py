@@ -11,7 +11,7 @@ if not api_key:
     if len(sys.argv) == 2:
         api_key = sys.argv[1]
     else:
-        print("Error: edit {} to set api_key, or provide it on the command-line.".format(sys.argv[0]))
+        print("You forgot to change the api key.\nPlease look at the Github instructions. -> https://github.com/YannickDC/league-championFetcher")
         quit(1)
 
 valid_servers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr','ru','oc1']
@@ -55,8 +55,7 @@ elif matchlist_data.status_code != 200:
 total_games = json.loads(matchlist_data.text)["totalGames"]
 
 champions = []
-roles = []
-lanes = []
+
 
 limit = int(total_games / 100 ) + 1 #always wanna do more then actually needed to prevent that matches are missing
 index_end = 100
@@ -67,8 +66,6 @@ for a in range(limit):
     if matches_data.status_code == 200:
         matches = json.loads(matches_data.text)['matches']
         for match in matches:
-            roles.append(match['role'])
-            lanes.append(match['lane'])
             champions.append(champion_names[match['champion']])
     else:
         print("Recieved error HTTP {} when requesting match info for summoner \"{}\"".format(matches_data.status_code, account_name))
@@ -79,12 +76,10 @@ for a in range(limit):
     index_start = index_end
     index_end +=100
 
-counterRoles = Counter(roles)
-counterLanes = Counter(lanes)
 counterOutput = Counter(champions)
 print("[ Results for {} ] ".format(account_name))
 print("Total games on this account: ", total_games)
-print("\n")
+print("Total champions in this result set: {}".format(len(counterOutput)))
 print("[  Champion Results  ]")
 print("")
 for key,value in counterOutput.most_common():
