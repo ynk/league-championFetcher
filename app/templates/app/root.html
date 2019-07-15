@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     {% block head %}
-         <title>Hello Root!</title>
+         <title>Hello World!</title>
     {% endblock %}
     <meta name="p:domain_verify" content="f7ef92c6141b546a0c40c971e3e7f092"/>
     <!-- Latest compiled and minified CSS -->
@@ -68,6 +68,32 @@
                             {{ result['message'] }}
                         </p>
                     </blockquote>
+                {% else %}
+                <h4 class="display-4">
+                    {{ result['message'] }}
+                </h4>
+
+                <p class="h4">
+                    Account Name: {{ result['account_name'] }}
+                </p>
+
+                <p class="h4">
+                    Server: {{ result['server'] }}
+                </p>
+
+                <p class="h4">
+                    Total Games: {{ result['total_games'] }}
+                </p>
+
+                <p class="h4">
+                    Total Champions: {{ result['total_champions'] }}
+                </p>
+
+                {% for key, value in result['champions'].items() %}
+                    <p class="h6">
+                        {{ key }}: {{ value }}
+                    </p>
+                {% endfor %}
                 {% endif %}
             {% endif %}
         {% endif %}
