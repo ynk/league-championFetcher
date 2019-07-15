@@ -13,6 +13,7 @@ class Riot:
         self.server = server
         self.api_key = api_key
         self.root_url = "https://{}.api.riotgames.com/lol/summoner/v4".format(server)
+        self.match_data_url = "https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account/".format(server)
         self.champion_names = {
             1: 'Annie',
             2: 'Olaf',
@@ -242,8 +243,8 @@ class Riot:
         return account_data
 
     def get_matchlist_data(self, account_id):
-        matchlist_data = requests.get("{}/matchlists/by-account/{}?beginIndex=9999999&api_key={}"
-                                      .format(self.root_url, account_id, self.api_key))
+        matchlist_data = requests.get("{}/{}?beginIndex=9999999&api_key={}"
+                                      .format(self.match_data_url, account_id, self.api_key))
         # little trick to get that.
         return matchlist_data
 
