@@ -38,3 +38,5 @@ def create_app():
 
     app.register_blueprint(index)
     return app
+
+create_app()
