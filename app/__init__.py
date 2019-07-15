@@ -6,7 +6,7 @@ from flask_api import status
 from app.riot import Riot
 
 
-def create_app():
+def create_app(*args):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.secret_key = "App_secret_key!"
