@@ -1,1 +1,2 @@
-web: gunicorn app:__init__
+export FLASK_APP=app
+web: flask run
