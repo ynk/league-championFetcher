@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block head %}
+         <title>Hello Root!</title>
+    {% endblock %}
+    <meta name="p:domain_verify" content="f7ef92c6141b546a0c40c971e3e7f092"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Bitter|Cormorant+Garamond|Righteous|IBM+Plex+Serif|Neuton" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body class="container">
+    <h1 class="page-header" align="center">
+        Hello World
+    </h1>
+
+    <div class="row">
+        <form action = "http://localhost:5000/" method = "POST">
+            <div class="form-row">
+                <div class="col">
+                    <label class="label-important">
+                        Riot Api Key:
+                        <input class="form-control form-control-sm" type = "text" name = "riot_api" required/>
+                    </label>
+                </div>
+
+                <div class="col">
+                    <label class="label-important">
+                        Account name:
+                        <input class="form-control form-control-sm" type = "text" name = "account_name" required/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="server_select">Server</label>
+                <select class="form-control form-control-sm" id="server_select" name="servers">
+                    {% if server %}
+                        {% for value in server %}
+                            <option>{{ value }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <div class="col-lg-8">
+        {% if result %}
+            {% for key, value in result.items() %}
+               <p class="label">
+                   {{ key }} --- {{ value }}
+               </p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
