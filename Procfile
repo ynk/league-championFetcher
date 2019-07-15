@@ -1,2 +1,2 @@
-pip install -r requirements.txt
-web: gunicorn wsgi:league_script
+web: gunicorn app:create_app
+
