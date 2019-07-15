@@ -55,14 +55,21 @@
             <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
-
-    <div class="col-lg-8">
+    <hr/>
+    <div class="row">
         {% if result %}
-            {% for key, value in result.items() %}
-               <p class="label">
-                   {{ key }} --- {{ value }}
-               </p>
-            {% endfor %}
+            {% if 'status' in result %}
+                {% if result['status'] != 200 %}
+                    <h4 class="display-4">
+                        Error occurred!
+                    </h4>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">
+                            {{ result['message'] }}
+                        </p>
+                    </blockquote>
+                {% endif %}
+            {% endif %}
         {% endif %}
     </div>
 </body>

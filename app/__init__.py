@@ -3,6 +3,8 @@ import os
 from flask import Flask, Blueprint, jsonify, render_template, request
 from flask_api import status
 
+from app.riot import Riot
+
 
 def create_app():
     # create and configure the app
@@ -24,8 +26,15 @@ def create_app():
             return render_template("app/root.html", server=valid_servers)
         elif request.method == "POST":
             info = request.form
-            print(info)
-            return render_template("app/root.html", result=info, server=valid_servers)
+            riot_api = info['riot_api'] if 'riot_api' in info else None
+            account_name = info['account_name'] if 'account_name' in info else None
+            server = info['servers'] if 'servers' in info else None
+
+            riot = Riot(account_name, server, riot_api)
+            result = riot.master_controller()
+            return render_template("app/root.html",
+                                   result=result,
+                                   server=valid_servers)
 
     app.register_blueprint(index)
     return app
