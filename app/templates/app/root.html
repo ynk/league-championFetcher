@@ -21,7 +21,7 @@
 </head>
 <body class="container">
     <h1 class="page-header" align="center">
-        Hello World
+        League Champion Fetcher
     </h1>
 
     <div class="row">
@@ -30,7 +30,7 @@
                 <div class="col">
                     <label class="label-important">
                         Riot Api Key:
-                        <input class="form-control form-control-sm" type = "text" name = "riot_api" required/>
+                        <input class="form-control form-control-sm" type = "password" name = "riot_api" required/>
                     </label>
                 </div>
 
@@ -56,7 +56,6 @@
       </form>
     </div>
     <hr/>
-    <div class="row">
         {% if result %}
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
@@ -69,29 +68,31 @@
                         </p>
                     </blockquote>
                 {% else %}
-                <h4 class="display-4">
-                    {{ result['message'] }} <br/>
-                </h4>
 
                 <p class="h3">
                     Account Name: {{ result['account_name'] }} <br/>
-                </p>
-                <hr/>
-                <p class="h4">
                     Server: {{ result['server'] }} <br/>
-                    Total Games: {{ result['total_games'] }} <br/>
+                  Total Games: {{ result['total_games'] }} <br/>
                     Total Champions: {{ result['total_champions'] }} <br/>
                 </p>
+                <hr/>
 
                 <p class="h6">
-                    <u>Champions</u>: <u> Number of Matches</u> <br/>
+                <table>
+                    <tr>
+                      <th>Champion</th>
+                      <th>Number of Matches</th>
+                    </tr>
+
                     {% for key, value in result['champions'] %}
-                       <b>{{ key }}</b>: {{ value }} <br/>
-                </p>
+
+                       <tr><td>{{ key }}</td><td>{{ value }}</td></tr>
                 {% endfor %}
+                    </table>
                 {% endif %}
+
             {% endif %}
         {% endif %}
-    </div>
+
 </body>
 </html>
