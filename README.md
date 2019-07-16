@@ -12,7 +12,7 @@ I have made a discord server dedicated to things like this  [Discord Invite link
 * requests (pip install requests)
 
 # Usage
-# Usage
+
 1) Run the file generate a working [Development API Key](https://developer.riotgames.com/)
 2) Download and install [python 3+](https://www.python.org/downloads/) 
 3) **Make sure to enable python Path checkbox**: 
@@ -50,3 +50,11 @@ This is far from perfect so I'm open to improvements and suggestions.
 Feel free to add me on discord. ynk#8213 or to join my discord server: [Discord Invite link](https://discordapp.com/invite/gweJvhp)
 
 
+### Update
+To run the updated web app
+
+    gunicorn "app:create_app()"
+    
+**Purpose**: If this webapp is hosted on a domain/heroku.com (www.heroku.com), it will be easier.
+Noone needs to install anything. Entire app is configured to be directly installed and used in heroku.
+- Pirate

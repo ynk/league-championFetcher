@@ -61,7 +61,7 @@
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
                     <h4 class="display-4">
-                        Error occurred!
+                        Error occurred! <br/>
                     </h4>
                     <blockquote class="blockquote">
                         <p class="mb-0">
@@ -70,29 +70,24 @@
                     </blockquote>
                 {% else %}
                 <h4 class="display-4">
-                    {{ result['message'] }}
+                    {{ result['message'] }} <br/>
                 </h4>
 
+                <p class="h3">
+                    Account Name: {{ result['account_name'] }} <br/>
+                </p>
+                <hr/>
                 <p class="h4">
-                    Account Name: {{ result['account_name'] }}
+                    Server: {{ result['server'] }} <br/>
+                    Total Games: {{ result['total_games'] }} <br/>
+                    Total Champions: {{ result['total_champions'] }} <br/>
                 </p>
 
-                <p class="h4">
-                    Server: {{ result['server'] }}
+                <p class="h6">
+                    <u>Champions</u>: <u> Number of Matches</u> <br/>
+                    {% for key, value in result['champions'].items() %}
+                       <b>{{ key }}</b>: {{ value }} <br/>
                 </p>
-
-                <p class="h4">
-                    Total Games: {{ result['total_games'] }}
-                </p>
-
-                <p class="h4">
-                    Total Champions: {{ result['total_champions'] }}
-                </p>
-
-                {% for key, value in result['champions'].items() %}
-                    <p class="h6">
-                        {{ key }}: {{ value }}
-                    </p>
                 {% endfor %}
                 {% endif %}
             {% endif %}
