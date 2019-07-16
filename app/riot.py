@@ -13,7 +13,7 @@ class Riot:
         self.server = server
         self.api_key = api_key
         self.root_url = "https://{}.api.riotgames.com/lol/summoner/v4".format(server)
-        self.match_data_url = "https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account/".format(server)
+        self.match_data_url = "https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account".format(server)
         self.champion_names = {
             1: 'Annie',
             2: 'Olaf',
@@ -205,7 +205,9 @@ class Riot:
 
         account_id = json.loads(account_data.text)["accountId"]
         matchlist_data = self.get_matchlist_data(account_id)
+
         if matchlist_data.status_code == 403:
+ 
             return {
                 "message": "Permission denied when requesting total number of matches for summoner \"{}\""
                     .format(self.account_name),
@@ -262,14 +264,16 @@ class Riot:
         index_start = 0
 
         for _ in range(limit):
-            matches_data = requests.get("{}/matchlists/by-account/{}?endIndex={}&beginIndex={}&api_key={}"
-                                        .format(self.root_url, account_id, index_end,
+
+            matches_data = requests.get("{}/{}?endIndex={}&beginIndex={}&api_key={}"
+                                        .format(self.match_data_url, account_id, index_end,
                                                 index_start, self.api_key))
             if matches_data.status_code == 200:
                 matches = json.loads(matches_data.text)['matches']
                 for match in matches:
                     champions.append(self.champion_names[match['champion']])
             else:
+                
                 print("Received error HTTP {} when requesting match info for "
                       "summoner \"{}\"".format(matches_data.status_code, self.account_name))
                 print(matches_data)
