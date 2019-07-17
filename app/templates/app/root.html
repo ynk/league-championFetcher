@@ -56,6 +56,7 @@
       </form>
     </div>
     <hr/>
+    <div class="row">
         {% if result %}
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
@@ -78,21 +79,27 @@
                 <hr/>
 
                 <p class="h6">
-                <table>
-                    <tr>
+                <table class="table">
+                    <tr class="popover-title">
                       <th>Champion</th>
                       <th>Number of Matches</th>
                     </tr>
 
                     {% for key, value in result['champions'] %}
 
-                       <tr><td>{{ key }}</td><td>{{ value }}</td></tr>
+                       <tr class="popover-content"><td>{{ key }}</td><td>{{ value }}</td></tr>
                 {% endfor %}
                     </table>
                 {% endif %}
 
             {% endif %}
+        <hr/>
         {% endif %}
-
+    </div>
+    <div class="footer">
+        <p align="center" class="text-info">
+            With <3 from ynk!
+        </p>
+    </div>
 </body>
 </html>
