@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     {% block head %}
-         <title>Hello World!</title>
+         <title>League Champion Fetcher</title>
     {% endblock %}
     <meta name="p:domain_verify" content="f7ef92c6141b546a0c40c971e3e7f092"/>
     <!-- Latest compiled and minified CSS -->
@@ -20,9 +20,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body class="container">
-    <h1 class="page-header" align="center">
+    <p class="h1" align="center">
         League Champion Fetcher
-    </h1>
+    </p>
+    <p align="center">
+        <small class="text-muted"> v0.0.2-alpha</small>
+    </p>
 
     <div class="row">
         <form action = "/" method = "POST">
@@ -60,20 +63,19 @@
         {% if result %}
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
-                    <h4 class="display-4">
+                    <p class="display-4">
                         Error occurred! <br/>
-                    </h4>
+                    </p>
                     <blockquote class="blockquote">
                         <p class="mb-0">
                             {{ result['message'] }}
                         </p>
                     </blockquote>
                 {% else %}
-
-                <p class="h3">
+                <p class="h5">
                     Account Name: {{ result['account_name'] }} <br/>
                     Server: {{ result['server'] }} <br/>
-                  Total Games: {{ result['total_games'] }} <br/>
+                    Total Games: {{ result['total_games'] }} <br/>
                     Total Champions: {{ result['total_champions'] }} <br/>
                 </p>
                 <hr/>
@@ -90,10 +92,9 @@
                        <tr class="popover-content"><td>{{ key }}</td><td>{{ value }}</td></tr>
                 {% endfor %}
                     </table>
+                <hr/>
                 {% endif %}
-
             {% endif %}
-        <hr/>
         {% endif %}
     </div>
     <div class="footer">
