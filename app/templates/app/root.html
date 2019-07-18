@@ -59,12 +59,12 @@
       </form>
     </div>
     <hr/>
-    <div class="row">
+    <div>
         {% if result %}
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
                     <p class="display-4">
-                        Error occurred! <br>
+                        Error occurred!
                     </p>
                     <blockquote class="blockquote">
                         <p class="mb-0">
@@ -73,10 +73,10 @@
                     </blockquote>
                 {% else %}
                 <p class="h5">
-                    Account Name: {{ result['account_name'] }} <br>
-                    Server: {{ result['server'] }} <br>
-                    Total Games: {{ result['total_games'] }} <br>
-                    Total Champions: {{ result['total_champions'] }} <br>
+                    Account Name: <b>{{ result['account_name'] }} </b> <br>
+                    Server: <b>{{ result['server'] }}</b> <br>
+                    Total Games: <b>{{ result['total_games'] }}</b> <br>
+                    Total Champions: <b>{{ result['total_champions'] }}</b> <br>
                 </p>
                 <hr/>
                 <p class="h6">
@@ -97,8 +97,9 @@
         {% endif %}
     </div>
     <div class="footer">
-        <p align="center" class="text-info">
-            With <3 from ynk!
+        <p align="center">
+            With <3 from ynk! <br>
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/ibtehaz-shawon">p1r_a_te</a> was here too.
         </p>
     </div>
 </body>
