@@ -17,7 +17,7 @@ def create_app(*args):
     except OSError as _:
         print(str(_))
 
-    index = Blueprint('lookup', __name__, url_prefix='/lookup')
+    index = Blueprint('lookup', __name__, url_prefix='/')
 
     @index.route('/', methods=['GET', 'POST'])
     def riot():
@@ -36,9 +36,9 @@ def create_app(*args):
                                    result=result,
                                    server=valid_servers)
 
-    @app.route("/")
-    def root():
-        return "Homie! You are in the 'riot' place, but at the wrong time!"
+    # @app.route("/")
+    # def root():
+    #     return "Homie! You are in the 'riot' place, but at the wrong time!"
 
     app.register_blueprint(index)
     return app
