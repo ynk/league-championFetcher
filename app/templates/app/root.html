@@ -64,9 +64,8 @@
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
                     <p class="display-4">
-                        Error occurred!
+                        Error occurred! <br>
                     </p>
-                     <br/>
                     <blockquote class="blockquote">
                         <p class="mb-0">
                             {{ result['message'] }}
@@ -74,10 +73,10 @@
                     </blockquote>
                 {% else %}
                 <p class="h5">
-                    Account Name: {{ result['account_name'] }} <br/>
-                    Server: {{ result['server'] }} <br/>
-                    Total Games: {{ result['total_games'] }} <br/>
-                    Total Champions: {{ result['total_champions'] }} <br/>
+                    Account Name: {{ result['account_name'] }} <br>
+                    Server: {{ result['server'] }} <br>
+                    Total Games: {{ result['total_games'] }} <br>
+                    Total Champions: {{ result['total_champions'] }} <br>
                 </p>
                 <hr/>
                 <p class="h6">
