@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block head %}
+         <title>League Champion Fetcher</title>
+    {% endblock %}
+    <meta name="p:domain_verify" content="f7ef92c6141b546a0c40c971e3e7f092"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Bitter|Cormorant+Garamond|Righteous|IBM+Plex+Serif|Neuton" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body class="container">
+    <p class="h1" align="center">
+        League Champion Fetcher
+    </p>
+    <p align="center">
+        <small class="text-muted"> v0.0.2-alpha</small>
+    </p>
+
+    <div class="row">
+        <form action = "/" method = "POST">
+            <div class="form-row">
+                <div class="col">
+                    <label class="label-important">
+                        Riot Api Key:
+                        <input class="form-control form-control-sm" type = "password" name = "riot_api" required/>
+                    </label>
+                </div>
+
+                <div class="col">
+                    <label class="label-important">
+                        Account name:
+                        <input class="form-control form-control-sm" type = "text" name = "account_name" required/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="server_select">Server</label>
+                <select class="form-control form-control-sm" id="server_select" name="servers">
+                    {% if server %}
+                        {% for value in server %}
+                            <option>{{ value }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <hr/>
+    <div>
+        {% if result %}
+            {% if 'status' in result %}
+                {% if result['status'] != 200 %}
+                    <p class="display-4">
+                        Error occurred!
+                    </p>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">
+                            {{ result['message'] }}
+                        </p>
+                    </blockquote>
+                {% else %}
+                <p class="h5">
+                    Account Name: <b>{{ result['account_name'] }} </b> <br>
+                    Server: <b>{{ result['server'] }}</b> <br>
+                    Total Games: <b>{{ result['total_games'] }}</b> <br>
+                    Total Champions: <b>{{ result['total_champions'] }}</b> <br>
+                </p>
+                <hr/>
+                <p class="h6">
+                <table class="table">
+                    <tr class="popover-title">
+                      <th>Champion</th>
+                      <th>Number of Matches</th>
+                    </tr>
+
+                    {% for key, value in result['champions'] %}
+
+                       <tr class="popover-content"><td>{{ key }}</td><td>{{ value }}</td></tr>
+                {% endfor %}
+                    </table>
+                <hr/>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="footer">
+        <p align="center">
+            With <3 from ynk! <br>
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/ibtehaz-shawon">p1r_a_te</a> was here too.
+        </p>
+    </div>
+</body>
+</html>
