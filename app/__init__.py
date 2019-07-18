@@ -17,10 +17,10 @@ def create_app(*args):
     except OSError as _:
         print(str(_))
 
-    index = Blueprint('index', __name__, url_prefix='/')
+    index = Blueprint('lookup', __name__, url_prefix='/lookup')
 
     @index.route('/', methods=['GET', 'POST'])
-    def root():
+    def riot():
         valid_servers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
         if request.method == 'GET':
             return render_template("app/root.html", server=valid_servers)
@@ -35,6 +35,10 @@ def create_app(*args):
             return render_template("app/root.html",
                                    result=result,
                                    server=valid_servers)
+
+    @app.route("/")
+    def root():
+        return "Homie! You are in the 'riot' place, but at the wrong time!"
 
     app.register_blueprint(index)
     return app

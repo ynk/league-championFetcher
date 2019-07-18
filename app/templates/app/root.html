@@ -28,7 +28,7 @@
     </p>
 
     <div class="row">
-        <form action = "/" method = "POST">
+        <form action = "/lookup" method = "POST">
             <div class="form-row">
                 <div class="col">
                     <label class="label-important">
@@ -64,8 +64,9 @@
             {% if 'status' in result %}
                 {% if result['status'] != 200 %}
                     <p class="display-4">
-                        Error occurred! <br/>
+                        Error occurred!
                     </p>
+                     <br/>
                     <blockquote class="blockquote">
                         <p class="mb-0">
                             {{ result['message'] }}
@@ -79,7 +80,6 @@
                     Total Champions: {{ result['total_champions'] }} <br/>
                 </p>
                 <hr/>
-
                 <p class="h6">
                 <table class="table">
                     <tr class="popover-title">
