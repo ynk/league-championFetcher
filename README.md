@@ -29,7 +29,7 @@ pip install -r requirements.txt
 * Lets start this app. (Run this command from the project directory). This will start the project on port 8080 (or any port you want).
 <b> Make sure you are on the root directory of the project when you run the following command </b>
 ```
-gunicorn "app:create_app()" --bind=0.0.0.0:8080
+gunicorn "app:create_app()" --bind=0.0.0.0:8080 --timeout 300
 ```
 
 This will be the output... 
@@ -41,6 +41,7 @@ This will be the output...
 ```
 * Now it's your job to port your server to connect with port 8080 (or any other port). For testing purpose,
 check http://0.0.0.0:8080
+* timeout 300 command will keep the connection open as long as 5 minutes aka 300 seconds.
 
 -------------------------------------------------------
 
