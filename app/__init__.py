@@ -29,9 +29,11 @@ def create_app(*args):
             riot_api = info['riot_api'] if 'riot_api' in info else None
             account_name = info['account_name'] if 'account_name' in info else None
             server = info['servers'] if 'servers' in info else None
+            print("Request came for account name: {}".format(account_name))
 
             riot = Riot(account_name, server, riot_api)
             result = riot.master_controller()
+            print("Request done for account name: {}".format(account_name))
             return render_template("app/root.html",
                                    result=result,
                                    server=valid_servers)
