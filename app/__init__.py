@@ -47,8 +47,7 @@ def create_app(*args):
             'Japan',
             'Korean',
         ]
-        
-        
+
         if request.method == 'GET':
             return render_template("app/root.html", server=valid_servers)
         elif request.method == "POST":
@@ -57,19 +56,20 @@ def create_app(*args):
             account_name = info['account_name'] if 'account_name' in info else None
             server = info['servers'] if 'servers' in info else None
 
-            if server is None: 
+            if server is None:
                 return {
                     "message": "server cannot be None. It's required!",
                     "status": 404,
                 }
             else:
-                server = server_to_riot_name[server] if server in server_to_riot_name else ""  # Empty String. Won't break
+                # Empty String. Won't break
+                server = server_to_riot_name[server] if server in server_to_riot_name else ""
                 if server == "":
                     return {
                         "message": "Server not found!",
                         "status": 404,
                     }
-            
+
             riot = Riot(account_name, server, riot_api)
             result = riot.master_controller()
             return render_template("app/root.html",

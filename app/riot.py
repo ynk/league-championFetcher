@@ -4,7 +4,8 @@ from collections import Counter
 
 import requests
 
-valid_servers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
+valid_servers = ['euw1', 'na1', 'eun1', 'br1',
+                 'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
 
 
 class Riot:
@@ -12,8 +13,10 @@ class Riot:
         self.account_name = acc_name
         self.server = server
         self.api_key = api_key
-        self.root_url = "https://{}.api.riotgames.com/lol/summoner/v4".format(server)
-        self.match_data_url = "https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account".format(server)
+        self.root_url = "https://{}.api.riotgames.com/lol/summoner/v4".format(
+            server)
+        self.match_data_url = "https://{}.api.riotgames.com/lol/match/v4/matchlists/by-account".format(
+            server)
         self.champion_names = {
             1: 'Annie',
             2: 'Olaf',
@@ -192,14 +195,14 @@ class Riot:
         elif account_data.status_code == 403:
             return {
                 "message": "Permission denied when requesting account data for summoner \"{}\""
-                    .format(self.account_name),
+                .format(self.account_name),
                 "status": 404
             }
         elif account_data.status_code != 200:
             return {
                 "message": "Received error HTTP {} when requesting data for summoner \"{}\""
-                    .format(account_data.status_code,
-                            self.account_name),
+                .format(account_data.status_code,
+                        self.account_name),
                 "status": 404
             }
 
@@ -207,16 +210,17 @@ class Riot:
         matchlist_data = self.get_matchlist_data(account_id)
 
         if matchlist_data.status_code == 403:
- 
+
             return {
                 "message": "Permission denied when requesting total number of matches for summoner \"{}\""
-                    .format(self.account_name),
+                .format(self.account_name),
                 "status": 404
             }
         elif matchlist_data.status_code != 200:
             return {
                 "message": "Received error HTTP {} when requesting total number of matches"
-                           " for summoner \"{}\"".format(matchlist_data.status_code, self.account_name),
+                           " for summoner \"{}\"".format(
+                               matchlist_data.status_code, self.account_name),
                 "status": 404
             }
 
@@ -273,7 +277,7 @@ class Riot:
                 for match in matches:
                     champions.append(self.champion_names[match['champion']])
             else:
-                
+
                 print("Received error HTTP {} when requesting match info for "
                       "summoner \"{}\"".format(matches_data.status_code, self.account_name))
                 print(matches_data)

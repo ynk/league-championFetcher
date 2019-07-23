@@ -21,7 +21,8 @@ while True:
         sys.exit(-1)
     break
 
-valid_servers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
+valid_servers = ['euw1', 'na1', 'eun1', 'br1',
+                 'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
 
 account_name = None
 server = None
@@ -32,7 +33,8 @@ while not account_name:
         print("Invalid input.")
 while not server in valid_servers:
     try:
-        server = input("Enter a valid server from this list {}: ".format(valid_servers))
+        server = input(
+            "Enter a valid server from this list {}: ".format(valid_servers))
     except ValueError:
         print("Invalid input.")
 
@@ -49,12 +51,13 @@ if account_data.status_code == 404:
     print("Summoner \"{}\" does not exist!".format(account_name))
     sys.exit(-1)
 elif account_data.status_code == 403:
-    print("Permission denied when requesting account data for summoner \"{}\"".format(account_name))
+    print("Permission denied when requesting account data for summoner \"{}\"".format(
+        account_name))
     sys.exit(-1)
 elif account_data.status_code != 200:
     print("Received error HTTP {} when requesting data for summoner \"{}\""
           .format(account_data.status_code,
-                                                                                   account_name))
+                  account_name))
     sys.exit(-1)
 
 account_id = json.loads(account_data.text)["accountId"]
@@ -62,7 +65,8 @@ print("Summoner has been found. Fetching match data. This might take a while..."
 
 matchlist_data = riot.get_matchlist_data(account_id)
 if matchlist_data.status_code == 403:
-    print("Permission denied when requesting total number of matches for summoner \"{}\"".format(account_name))
+    print("Permission denied when requesting total number of matches for summoner \"{}\"".format(
+        account_name))
     sys.exit(-1)
 elif matchlist_data.status_code != 200:
     print("Received error HTTP {} when requesting total number of matches"
