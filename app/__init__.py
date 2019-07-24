@@ -22,12 +22,12 @@ def create_app(*args):
     @index.route('/', methods=['GET', 'POST'])
     def riot():
         server_to_riot_name = {
+            'North America': 'na1',
+            'Europe West': 'euw1',
             'Brazil': 'br1',
             'Euripe Nordic & East': 'eun1',
-            'Europe West': 'euw1',
             'Latin America North': 'la1',
             'Latin America South': 'la2',
-            'North America': 'na1',
             'Ocenia': 'oc1',
             'Turkey': 'tr1',
             'Japan': 'jp1',
@@ -35,12 +35,12 @@ def create_app(*args):
             'Russia': 'ru'
         }
         valid_servers = [
+            'North America',
+            'Europe West',
             'Brazil',
             'Euripe Nordic & East',
-            'Europe West',
             'Latin America North',
             'Latin America South',
-            'North America',
             'Ocenia',
             'Russia',
             'Turkey',
