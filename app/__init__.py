@@ -21,7 +21,33 @@ def create_app(*args):
 
     @index.route('/', methods=['GET', 'POST'])
     def riot():
-        valid_servers = ['euw1', 'na1', 'eun1', 'br1', 'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
+        server_to_riot_name = {
+            'Brazil': 'br1',
+            'Euripe Nordic & East': 'eun1',
+            'Europe West': 'euw1',
+            'Latin America North': 'la1',
+            'Latin America South': 'la2',
+            'North America': 'na1',
+            'Ocenia': 'oc1',
+            'Turkey': 'tr1',
+            'Japan': 'jp1',
+            'Korean': 'kr',
+            'Russia': 'ru'
+        }
+        valid_servers = [
+            'Brazil',
+            'Euripe Nordic & East',
+            'Europe West',
+            'Latin America North',
+            'Latin America South',
+            'North America',
+            'Ocenia',
+            'Russia',
+            'Turkey',
+            'Japan',
+            'Korean',
+        ]
+
         if request.method == 'GET':
             return render_template("app/root.html", server=valid_servers)
         elif request.method == "POST":
@@ -29,18 +55,26 @@ def create_app(*args):
             riot_api = info['riot_api'] if 'riot_api' in info else None
             account_name = info['account_name'] if 'account_name' in info else None
             server = info['servers'] if 'servers' in info else None
-            print("Request came for account name: {}".format(account_name))
+
+            if server is None:
+                return {
+                    "message": "server cannot be None. It's required!",
+                    "status": 404,
+                }
+            else:
+                # Empty String. Won't break
+                server = server_to_riot_name[server] if server in server_to_riot_name else ""
+                if server == "":
+                    return {
+                        "message": "Server not found!",
+                        "status": 404,
+                    }
 
             riot = Riot(account_name, server, riot_api)
             result = riot.master_controller()
-            print("Request done for account name: {}".format(account_name))
             return render_template("app/root.html",
                                    result=result,
                                    server=valid_servers)
-
-    # @app.route("/")
-    # def root():
-    #     return "Homie! You are in the 'riot' place, but at the wrong time!"
 
     app.register_blueprint(index)
     return app
