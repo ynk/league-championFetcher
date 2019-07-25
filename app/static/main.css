@@ -1,0 +1,20 @@
+.error {
+    color:#D32F2F;
+}
+
+.success-stuff {
+    color: #536DFE;
+}
+
+.main-title {
+    font-family: 'Crete Round', serif;
+    color: #212121;
+}
+
+.small-stuff {
+    font-family: 'Darker Grotesque', sans-serif;
+}
+
+.big_header_stuff {
+    color: #212121;
+}

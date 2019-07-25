@@ -167,8 +167,10 @@ class Riot:
 
     def master_controller(self):
         """
-        must be used from __init__.py class Only
-        :return:
+        This is a master controller function inside Riot class.
+        I wrote this function so that you can directly call this function in order to execute the script as it is.
+        It will take some time, but will return a the summoners information or some HTTP Errors
+        :return: dict
         """
         if self.account_name is None or len(self.account_name) == 0:
             return {
@@ -189,18 +191,18 @@ class Riot:
         account_data = self.get_account_data()
         if account_data.status_code == 404:
             return {
-                "message": "Summoner \"{}\" does not exist!".format(self.account_name),
+                "message": "Are you this summoner \"{}\" exist in the nine realm?".format(self.account_name),
                 "status": 404
             }
         elif account_data.status_code == 403:
             return {
-                "message": "Permission denied when requesting account data for summoner \"{}\""
+                "message": "You see, I was getting account data for summoner \"{}\". But I just don't have the permission!"
                 .format(self.account_name),
                 "status": 404
             }
         elif account_data.status_code != 200:
             return {
-                "message": "Received error HTTP {} when requesting data for summoner \"{}\""
+                "message": "All you need to know I recieved a not-so-good HTTP error ({}) for summoner \"{}\" when I was fetching his/her account information"
                 .format(account_data.status_code,
                         self.account_name),
                 "status": 404
@@ -212,14 +214,14 @@ class Riot:
         if matchlist_data.status_code == 403:
 
             return {
-                "message": "Permission denied when requesting total number of matches for summoner \"{}\""
+                "message": "Bro! I was stopped while requesting total number of matches for summoner \"{}\". Aparently I didn't have enough permission!"
                 .format(self.account_name),
                 "status": 404
             }
         elif matchlist_data.status_code != 200:
             return {
-                "message": "Received error HTTP {} when requesting total number of matches"
-                           " for summoner \"{}\"".format(
+                "message": "I received a not-so-good HTTP code: {} when requesting total number of matches"
+                           " for summoner \"{}\". Bad day!".format(
                                matchlist_data.status_code, self.account_name),
                 "status": 404
             }
@@ -240,6 +242,7 @@ class Riot:
     def get_account_data(self):
         """
         get account information for this particular user
+        even though the name of the function is pretty much self explanatory!
         :return:
         """
         account_data = requests.get("{}/summoners/by-name/{}?api_key={}"
@@ -249,6 +252,10 @@ class Riot:
         return account_data
 
     def get_matchlist_data(self, account_id):
+        """
+        the function name says what it does. Self explanatory! 
+        If you don't understand, then may be you lack basic!
+        """
         matchlist_data = requests.get("{}/{}?beginIndex=9999999&api_key={}"
                                       .format(self.match_data_url, account_id, self.api_key))
         # little trick to get that.
@@ -256,10 +263,10 @@ class Riot:
 
     def game_calculation(self, total_games, account_id):
         """
-        final calculation will be done here
-        :param total_games:
-        :param account_id:
-        :return:
+        this function will calculate how many games a player had with a champion.
+        :param total_games: number of games you played
+        :param account_id: your account_id duh!
+        :return: :list
         """
         champions = []
         # always wanna do more then actually needed to prevent that matches are missing
@@ -268,7 +275,6 @@ class Riot:
         index_start = 0
 
         for _ in range(limit):
-
             matches_data = requests.get("{}/{}?endIndex={}&beginIndex={}&api_key={}"
                                         .format(self.match_data_url, account_id, index_end,
                                                 index_start, self.api_key))
@@ -277,7 +283,6 @@ class Riot:
                 for match in matches:
                     champions.append(self.champion_names[match['champion']])
             else:
-
                 print("Received error HTTP {} when requesting match info for "
                       "summoner \"{}\"".format(matches_data.status_code, self.account_name))
                 print(matches_data)
