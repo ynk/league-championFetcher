@@ -9,7 +9,9 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Bitter|Cormorant+Garamond|Righteous|IBM+Plex+Serif|Neuton" rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Crete+Round|Darker+Grotesque|Sanchez&display=swap"
+        rel="stylesheet">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -21,11 +23,11 @@
 </head>
 
 <body class="container">
-    <p class="h1" align="center">
+    <p class="h1 main-title" align="center">
         League Champion Fetcher
     </p>
     <p align="center">
-        <small class="text-muted"> v0.0.2-alpha</small>
+        <small class="text-muted small-stuff"> v0.0.2-alpha</small>
     </p>
 
     <div class="row">
@@ -62,7 +64,7 @@
     <hr/>
     <div>
         {% if result %} {% if 'status' in result %} {% if result['status'] != 200 %}
-        <p class="display-4">
+        <p class="display-4 error">
             Error occurred!
         </p>
         <blockquote class="blockquote">
@@ -72,7 +74,10 @@
         </blockquote>
         {% else %}
         <p class="h5">
-            Account Name: <b>{{ result['account_name'] }} </b> <br> Server: <b>{{ result['server'] }}</b> <br> Total Games: <b>{{ result['total_games'] }}</b> <br> Total Champions: <b>{{ result['total_champions'] }}</b> <br>
+            Account Name: <b>{{ result['account_name'] }} </b> <br>
+            Server: <b>{{ result['server'] }}</b> <br> 
+            Total Games: <b>{{ result['total_games'] }}</b> <br> 
+            Total Champions: <b>{{ result['total_champions'] }}</b> <br>
         </p>
         <hr/>
         <p class="h6">
@@ -94,6 +99,7 @@
     </div>
     <div class="footer">
         <p align="center">
+            <br><br><br>
             With ❤️ from <a target="_blank" rel="noopener noreferrer" href="https://github.com/YannickDC">ynk</a>! <br>
             <a target="_blank" rel="noopener noreferrer" href="https://github.com/ibtehaz-shawon">p1r_a_te</a> was here too.<br> Feel free to join our <a target="_blank" rel="noopener noreferrer" href="https://discordapp.com/invite/gweJvhp">Discord</a>            server for any questions.
 

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Blueprint, jsonify, render_template, request
+from flask import Blueprint, Flask, jsonify, render_template, request
 from flask_api import status
 
 from app.riot import Riot
@@ -55,23 +55,41 @@ def create_app(*args):
             riot_api = info['riot_api'] if 'riot_api' in info else None
             account_name = info['account_name'] if 'account_name' in info else None
             server = info['servers'] if 'servers' in info else None
+            error = False
 
-            if server is None:
-                return {
-                    "message": "server cannot be None. It's required!",
+            if riot_api is None or account_name is None or server is None:
+                error = True
+                result = {
+                    "message": "What are you hiding bro? You haven't given all the info!",
                     "status": 404,
                 }
-            else:
-                # Empty String. Won't break
-                server = server_to_riot_name[server] if server in server_to_riot_name else ""
-                if server == "":
-                    return {
-                        "message": "Server not found!",
-                        "status": 404,
-                    }
+            
+            if len(account_name) < 3 or len(account_name) > 16:
+                error = True
+                result = {
+                    "message": "Dude! Your account name cannot be {}. Stop messing with us.".format(account_name),
+                    "status": 404,
+                }
 
-            riot = Riot(account_name, server, riot_api)
-            result = riot.master_controller()
+            # if len(riot_api) != 42:
+            #     return {
+            #         "message": "Are you sure you have the right API key? This ({}) doesn't seem right.".format(riot_api),
+            #         "status": 403,
+            #     }
+
+            # Empty String. Won't break
+            server = server_to_riot_name[server] if server in server_to_riot_name else ""
+            if server == "":
+                error = True
+                result = {
+                    "message": "Dude! What the heck is your server? We couldn't find it anywhere. Damn!",
+                    "status": 404,
+                }
+
+            if not error:
+                # Only Riot if no error, homie 0_0
+                riot = Riot(account_name, server, riot_api)
+                result = riot.master_controller()
             return render_template("app/root.html",
                                    result=result,
                                    server=valid_servers)
