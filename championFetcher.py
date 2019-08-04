@@ -44,7 +44,6 @@ It has been implemented fully from the previous version of the file.
 check app > riot_py
 """
 riot = Riot(account_name, server, api_key)
-
 print('Trying to find summoner...')
 account_data = riot.get_account_data()
 if account_data.status_code == 404:

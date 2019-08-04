@@ -209,6 +209,7 @@ class Riot:
             }
 
         account_id = json.loads(account_data.text)["accountId"]
+        account_level = json.loads(account_data.text)["summonerLevel"]
         matchlist_data = self.get_matchlist_data(account_id)
 
         if matchlist_data.status_code == 403:
@@ -227,12 +228,14 @@ class Riot:
             }
 
         total_games = json.loads(matchlist_data.text)["totalGames"]
+
         champions = self.game_calculation(total_games, account_id)
         counterOutput = Counter(champions)
         return {
             "message": "success",
             "total_games": total_games,
             "account_name": self.account_name,
+            "level": account_level,
             "server": self.server,
             "total_champions": len(counterOutput),
             "champions": counterOutput.most_common(),
