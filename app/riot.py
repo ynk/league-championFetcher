@@ -21,8 +21,8 @@ class Riot:
             1: 'Annie',
             2: 'Olaf',
             3: 'Galio',
-            4: 'TwistedFate',
-            5: 'XinZhao',
+            4: 'Twisted Fate',
+            5: 'Xin Zhao',
             6: 'Urgot',
             7: 'LeBlanc',
             8: 'Vladimir',
@@ -37,8 +37,8 @@ class Riot:
             17: 'Teemo',
             18: 'Tristana',
             19: 'Warwick',
-            20: 'Nunu',
-            21: 'MissFortune',
+            20: 'Nunu & Willump',
+            21: 'Miss Fortune',
             22: 'Ashe',
             23: 'Tryndamere',
             24: 'Jax',
@@ -259,7 +259,7 @@ class Riot:
         the function name says what it does. Self explanatory! 
         If you don't understand, then may be you lack basic!
         """
-        matchlist_data = requests.get("{}/{}?beginIndex=9999999&api_key={}"
+        matchlist_data = requests.get("{}/{}?beginIndex=99999999&api_key={}"
                                       .format(self.match_data_url, account_id, self.api_key))
         # little trick to get that.
         return matchlist_data
