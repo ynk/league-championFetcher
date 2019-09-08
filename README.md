@@ -9,6 +9,10 @@ Feel free to add me on discord. ynk#8213 or to join my discord server: [Discord 
 
 -------------------------------------------------------------
 ## Web App Update
+###### v0.1-beta
+Time to be big boy.
+
+
 ###### v0.0.2-alpha
 Refer to this part of the readme on how to run this web app.
 

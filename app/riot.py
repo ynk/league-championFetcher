@@ -1,8 +1,10 @@
 import json
 import sys
 from collections import Counter
-
 import requests
+from time import gmtime, strftime
+import time
+from datetime import datetime
 
 valid_servers = ['euw1', 'na1', 'eun1', 'br1',
                  'la1', 'la2', 'tr1', 'jp1', 'kr', 'ru', 'oc1']
@@ -166,6 +168,7 @@ class Riot:
         }
 
     def master_controller(self):
+
         """
         This is a master controller function inside Riot class.
         I wrote this function so that you can directly call this function in order to execute the script as it is.
@@ -190,6 +193,7 @@ class Riot:
 
         account_data = self.get_account_data()
         if account_data.status_code == 404:
+
             return {
                 "message": "Are you this summoner \"{}\" exist in the nine realm?".format(self.account_name),
                 "status": 404
@@ -197,14 +201,14 @@ class Riot:
         elif account_data.status_code == 403:
             return {
                 "message": "You see, I was getting account data for summoner \"{}\". But I just don't have the permission!"
-                .format(self.account_name),
+                    .format(self.account_name),
                 "status": 404
             }
         elif account_data.status_code != 200:
             return {
                 "message": "All you need to know I recieved a not-so-good HTTP error ({}) for summoner \"{}\" when I was fetching his/her account information"
-                .format(account_data.status_code,
-                        self.account_name),
+                    .format(account_data.status_code,
+                            self.account_name),
                 "status": 404
             }
 
@@ -213,24 +217,27 @@ class Riot:
         matchlist_data = self.get_matchlist_data(account_id)
 
         if matchlist_data.status_code == 403:
-
             return {
                 "message": "Bro! I was stopped while requesting total number of matches for summoner \"{}\". Aparently I didn't have enough permission!"
-                .format(self.account_name),
+                    .format(self.account_name),
                 "status": 404
             }
         elif matchlist_data.status_code != 200:
             return {
                 "message": "I received a not-so-good HTTP code: {} when requesting total number of matches"
                            " for summoner \"{}\". Bad day!".format(
-                               matchlist_data.status_code, self.account_name),
+                    matchlist_data.status_code, self.account_name),
                 "status": 404
             }
 
         total_games = json.loads(matchlist_data.text)["totalGames"]
-
         champions = self.game_calculation(total_games, account_id)
         counterOutput = Counter(champions)
+        self.modify_total_lookups()
+        get_lookup_number = self.get_totalLookups()
+
+
+
         return {
             "message": "success",
             "total_games": total_games,
@@ -239,6 +246,7 @@ class Riot:
             "server": self.server,
             "total_champions": len(counterOutput),
             "champions": counterOutput.most_common(),
+            "totalLookups": get_lookup_number,
             "status": 200
         }
 
@@ -248,6 +256,7 @@ class Riot:
         even though the name of the function is pretty much self explanatory!
         :return:
         """
+
         account_data = requests.get("{}/summoners/by-name/{}?api_key={}"
                                     .format(self.root_url,
                                             self.account_name,
@@ -256,7 +265,7 @@ class Riot:
 
     def get_matchlist_data(self, account_id):
         """
-        the function name says what it does. Self explanatory! 
+        the function name says what it does. Self explanatory!
         If you don't understand, then may be you lack basic!
         """
         matchlist_data = requests.get("{}/{}?beginIndex=99999999&api_key={}"
@@ -264,6 +273,7 @@ class Riot:
         # little trick to get that.
         return matchlist_data
 
+    # def get_mastery_data(self, f):
     def game_calculation(self, total_games, account_id):
         """
         this function will calculate how many games a player had with a champion.
@@ -286,11 +296,24 @@ class Riot:
                 for match in matches:
                     champions.append(self.champion_names[match['champion']])
             else:
-                print("Received error HTTP {} when requesting match info for "
-                      "summoner \"{}\"".format(matches_data.status_code, self.account_name))
+
                 print(matches_data)
                 sys.exit(-1)
 
             index_start = index_end
             index_end += 100
         return champions
+
+    def get_totalLookups(self) -> int:
+        f = open("totalLookups.log", "r")
+        if f.mode == 'r':
+            contents = f.read()
+        return contents
+
+    def modify_total_lookups(self):
+        newTotalLookups = int(str(self.get_totalLookups())) + 1
+        f = open("totalLookups.log", "w+")
+        f.write(str(newTotalLookups))
+        f.close()
+        return (newTotalLookups)
+

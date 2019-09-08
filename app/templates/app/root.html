@@ -29,7 +29,7 @@
         League Champion Fetcher
     </p>
     <p align="center">
-        <small class="text-muted small-stuff">v0.0.2-alpha</small>
+        <small class="text-muted small-stuff">v0.1-beta</small>
     </p>
 
     <div class="row">
@@ -37,19 +37,11 @@
             <div class="form-row">
                 <div class="col">
                     <label class="label-important">
-                        Riot Api Key:
-                        <input class="form-control form-control-sm" type = "password" name = "riot_api" required/>
-                    </label>
-                </div>
-
-                <div class="col">
-                    <label class="label-important">
                         Account name:
                         <input class="form-control form-control-sm" type = "text" name = "account_name" required/>
                     </label>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="server_select">Server</label>
                 <select class="form-control form-control-sm" id="server_select" name="servers">
@@ -62,7 +54,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div>
+        </div>
+
     <hr/>
     <div>
         {% if result %} {% if 'status' in result %} {% if result['status'] != 200 %}
@@ -81,6 +74,7 @@
             Server: <b>{{ result['server'] }}</b> <br>
             Total Games: <b>{{ result['total_games'] }}</b> <br> 
             Total Champions: <b>{{ result['total_champions'] }}</b> <br>
+
         </p>
         <p class="h6">
             <table class="table">
@@ -97,7 +91,8 @@
                 </tr>
                 {% endfor %}
             </table>
-            <hr/> {% endif %} {% endif %} {% endif %}
+            <hr/> Total Lookups: <b>{{ result['totalLookups'] }}</b> <br> {% endif %} {% endif %} {% endif %}
+
     </div>
     <div class="footer">
         <p align="center">
