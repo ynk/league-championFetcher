@@ -1,11 +1,11 @@
-# league-championFetcher
+# League Champion Fetcher
 
 Script that was seen on [r/leagueoflegends/](https://www.reddit.com/r/leagueoflegends/comments/cctwey/i_created_a_program_to_calculate_how_many_times/)
 
-## info
+## Info
 
 This is far from perfect so I'm open to improvements and suggestions.
-Feel free to add me on discord. ynk#8213 or to join my discord server: [Discord Invite link](https://discordapp.com/invite/gweJvhp)
+Feel free to add me on discord. **ynk#8213** or to join my discord server: [Discord Invite link](https://discordapp.com/invite/gweJvhp)
 
 -------------------------------------------------------------
 
