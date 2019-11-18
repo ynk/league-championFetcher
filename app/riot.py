@@ -143,6 +143,7 @@ class Riot:
             203: 'Kindred',
             222: 'Jinx',
             223: 'TahmKench',
+            235: 'Senna',
             236: 'Lucian',
             238: 'Zed',
             240: 'Kled',
