@@ -165,6 +165,7 @@ class Riot:
             516: 'Ornn',
             517: 'Sylas',
             518: 'Neeko',
+            523: 'Aphelios',
             555: 'Pyke',
         }
 
