@@ -167,6 +167,7 @@ class Riot:
             518: 'Neeko',
             523: 'Aphelios',
             555: 'Pyke',
+            875: 'Sett',
         }
 
     def master_controller(self):
