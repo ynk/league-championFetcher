@@ -5,7 +5,7 @@ try:
     import requests
 except ImportError:
     print("\"requests\" module is not installed. \nPlease look at the Github instructions. -> "
-          "https://github.com/YannickDC/league-championFetcher")
+          "https://github.com/ynkx/league-championFetcher")
     quit(1)
 
 import json
@@ -17,7 +17,7 @@ while True:
     api_key = input("Please provide your api_key: ")
     if len(api_key) == 0:
         print("You forgot to change the api key.\nPlease look at the Github instructions. -> "
-              "https://github.com/YannickDC/league-championFetcher")
+              "https://github.com/ynkx/league-championFetcher")
         sys.exit(-1)
     break
 
