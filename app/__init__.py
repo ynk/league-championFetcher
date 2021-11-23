@@ -3,6 +3,7 @@ import os
 from decouple import config
 from flask import Blueprint, Flask, jsonify, render_template, request
 from flask_api import status
+from requests.exceptions import ConnectionError
 
 from app.riot import Riot
 
@@ -96,8 +97,14 @@ def create_app(*args):
 
             if not error:
                 # Only Riot if no error, homie 0_0
-                riot = Riot(account_name, server, riot_api)
-                result = riot.master_controller()
+                try:
+                    riot = Riot(account_name, server, riot_api)
+                    result = riot.master_controller()
+                except ConnectionError:
+                    result = {
+                        "message": "Sorry man! Riot is not sending us the data at this moment. Will you try a bit later?",
+                        "status": 404,
+                    }
 
             return render_template("app/root.html",
                                    result=result,
@@ -108,6 +115,5 @@ def create_app(*args):
 
 
 if __name__ == "__main__":
-
     app = create_app()
     app.run()
